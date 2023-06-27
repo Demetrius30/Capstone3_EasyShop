@@ -100,20 +100,29 @@ public class CategoriesController
 
 
     // add annotation to call this method for a DELETE action - the url path must include the categoryId--COMPLETE
-    @DeleteMapping("{categoryId}")
+    @DeleteMapping("{id}")
     // add annotation to ensure that only an ADMIN can call this function--COMPLETE
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void deleteCategory(@PathVariable int id){
-        try{
-            var category = categoryDao.getById(id);
+    public HashMap<String, String> deleteCategory(@PathVariable int id){
+        categoryDao.delete(id);
+        HashMap<String, String> response = new HashMap<>();
+        response.put("Status", "Successful");
+        response.put("Message", "Category deleted");
 
-            if(category == null)
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        return response;
 
-                categoryDao.delete(id);
-        }catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "There was an ERROR!");
-        }
+
+
+//        try{
+//            var category = categoryDao.getById(id);
+//
+//            if(category == null)
+//                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+//
+//                categoryDao.delete(id);
+//        }catch (Exception e){
+//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "There was an ERROR!");
+//        }
 
     }
 }
