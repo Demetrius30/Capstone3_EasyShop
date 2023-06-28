@@ -20,8 +20,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
     }
 
     @Override
-    public List<Category> getAllCategories()
-    {
+    public List<Category> getAllCategories(){
         List<Category> categories = new ArrayList<>();
 
         String query = "Select * From categories;";
@@ -97,7 +96,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
     }
 
     @Override
-    public void update(int categoryId, Category category) {
+    public void update(int categoryId, Category category){
         String query = "Update categories Set name=?, description=? Where category_id=?;";
 
         try(

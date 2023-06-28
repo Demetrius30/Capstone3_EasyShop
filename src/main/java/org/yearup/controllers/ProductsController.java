@@ -9,6 +9,7 @@ import org.yearup.models.Product;
 import org.yearup.data.ProductDao;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -44,8 +45,7 @@ public class ProductsController
 
     @GetMapping("{id}")
 //    @PreAuthorize("permitAll()")
-    public Product getById(@PathVariable int id )
-    {
+    public Product getById(@PathVariable int id ){
         try
         {
             var product = productDao.getById(id);
@@ -68,7 +68,7 @@ public class ProductsController
         {
             return productDao.create(product);
         }
-        catch(Exception ex)
+        catch(Exception e)
         {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
@@ -76,16 +76,24 @@ public class ProductsController
 
     @PutMapping("{id}")
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void updateProduct(@PathVariable int id, @RequestBody Product product)
-    {
-        try
-        {
-            productDao.create(product);
-        }
-        catch(Exception ex)
-        {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
-        }
+    public HashMap<String, String> updateProduct(@PathVariable int id, @RequestBody Product product){
+        productDao.update(id, product);
+
+        HashMap<String, String> response = new HashMap<>();
+
+        response.put("Status", "Successful");
+        response.put("Message", "Product Updated Successfully");
+
+        return response;
+
+//        try
+//        {
+//            productDao.create(product);
+//        }
+//        catch(Exception ex)
+//        {
+//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+//        }
     }
 
     @DeleteMapping("{id}")

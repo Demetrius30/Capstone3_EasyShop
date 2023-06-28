@@ -20,8 +20,7 @@ import java.util.List;
 @RequestMapping("/categories")
 // add annotation to allow cross site origin requests--COMPLETE
 @CrossOrigin
-public class CategoriesController
-{
+public class CategoriesController{
     private CategoryDao categoryDao;
     private ProductDao productDao;
 
@@ -103,6 +102,7 @@ public class CategoriesController
     @DeleteMapping("{id}")
     // add annotation to ensure that only an ADMIN can call this function--COMPLETE
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public HashMap<String, String> deleteCategory(@PathVariable int id){
         categoryDao.delete(id);
         HashMap<String, String> response = new HashMap<>();
