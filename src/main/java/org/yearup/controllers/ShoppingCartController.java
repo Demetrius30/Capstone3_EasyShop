@@ -2,6 +2,7 @@ package org.yearup.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -28,27 +29,24 @@ public class ShoppingCartController{
 
 
     @Autowired
-    public ShoppingCartController(ShoppingCartDao shoppingCartDao){
+    public ShoppingCartController(ShoppingCartDao shoppingCartDao, UserDao userDao, ProductDao productDao){
+        this.productDao = productDao;
+        this.userDao = userDao;
         this.shoppingCartDao = shoppingCartDao;}
 
     // each method in this controller requires a Principal object as a parameter
     @GetMapping
-    public List<ShoppingCart> getCart(Principal principal) {
-        try
-        {
-            // get the currently logged-in username
+    public ShoppingCart getCart(Principal principal) {
+        try{
             String userName = principal.getName();
-            // find database user by userId
             User user = userDao.getByUserName(userName);
+
             int userId = user.getId();
 
-            // use the shoppingCartDao to get all items in the cart and return the cart
-            var cart = shoppingCartDao.getAllCart();
-
-            return cart;
-        }
-        catch(Exception e)
+            return shoppingCartDao.getByUserId(userId);
+        }catch(Exception e)
         {
+//            e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
@@ -62,13 +60,14 @@ public class ShoppingCartController{
     // add a POST method to add a product to the cart - the url should be
     @PostMapping()
     // https://localhost:8080/cart/products/15 (15 is the productId to be added
-    public ShoppingCart addToCart(@RequestBody ShoppingCart shoppingCart, Principal principal){
+    public void addToCart(@PathVariable int productId, Principal principal, Authentication authentication){
         try{
-            String userName = principal.getName();
+            String userName = authentication.getName();
             User user = userDao.getByUserName(userName);
+
             int userId = user.getId();
 
-            return shoppingCartDao.create(shoppingCart);
+            shoppingCartDao.addProductToCart(userId, productId);
         }catch (Exception e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "There was an error!");
         }

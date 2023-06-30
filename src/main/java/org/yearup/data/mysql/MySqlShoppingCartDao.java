@@ -6,6 +6,7 @@ import org.yearup.data.ShoppingCartDao;
 import org.yearup.models.Product;
 import org.yearup.data.ProductDao;
 import org.yearup.models.ShoppingCart;
+import org.yearup.models.ShoppingCartItem;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
@@ -43,6 +44,38 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
     }
 
     @Override
+    public void saveShoppingCart(ShoppingCart shoppingCart) {
+
+    }
+
+    @Override
+    public void deleteShoppingCart(int cartId) {
+
+    }
+
+    @Override
+    public void addProductToCart(int userId, int productId) {
+        //Looking if user has cart already
+        ShoppingCart shoppingCart = getByUserId(userId);
+        if(shoppingCart == null){
+//            shoppingCart = new ShoppingCart(userId);
+            saveShoppingCart(shoppingCart);
+        }
+
+        ShoppingCartItem existingProduct = shoppingCart.getItems().get(productId);
+        if(existingProduct != null) {
+            //if product exist increase by 1
+            existingProduct.setQuantity(existingProduct.getQuantity() + 1);
+//            update(shoppingCart.getProductId(), existingProduct);
+        }
+    }
+
+//    @Override
+//    public void update(int cartId, ShoppingCart shoppingCart) {
+//
+//    }
+
+    @Override
     public List<ShoppingCart> getAllCart(){
         List<ShoppingCart> shoppingCarts = new ArrayList<>();
 
@@ -59,6 +92,16 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         }catch (SQLException e){
             e.printStackTrace();
         }return shoppingCarts;
+    }
+
+    @Override
+    public List<ShoppingCart> getShoppingCartById(int userId) {
+        return null;
+    }
+
+    @Override
+    public void addCartItem(int cartId, ShoppingCartItem shoppingCartItem) {
+
     }
 
     @Override

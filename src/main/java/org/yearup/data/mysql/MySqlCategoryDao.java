@@ -4,6 +4,8 @@ import org.apache.ibatis.jdbc.SQL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.yearup.data.CategoryDao;
 import org.yearup.models.Category;
 
@@ -64,6 +66,11 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
         }return null;
     }
 
+//    @Override// dont know if i need this method
+//    public Category add(Category category) {
+//        return null;
+//    }
+
     @Override
     public Category create(Category category) {
         String query = "INSERT INTO categories(category_id, name, description) VALUES(?, ?, ?);";
@@ -96,6 +103,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
     }
 
     @Override
+    @PutMapping
     public void update(int categoryId, Category category){
         String query = "Update categories Set name=?, description=? Where category_id=?;";
 
@@ -114,6 +122,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
     }
 
     @Override
+    @DeleteMapping
     public void delete(int categoryId) {
        String query = "Delete From categories Where category_id=?;";
 
@@ -125,6 +134,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
            preparedStatement.executeUpdate();
        }catch (SQLException e){
            e.printStackTrace();
+           throw new RuntimeException("Failed to delete category with Id: " + categoryId, e);
        }
     }
 

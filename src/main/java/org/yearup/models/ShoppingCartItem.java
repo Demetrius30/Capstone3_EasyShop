@@ -57,4 +57,6 @@ public class ShoppingCartItem
 
         return subTotal.subtract(discountAmount);
     }
+
+    public int getUserId() {return this.getUserId();}
 }
