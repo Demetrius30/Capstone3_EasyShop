@@ -86,32 +86,31 @@ public class ProductsController
 
         return response;
 
+    }
+
+    @DeleteMapping("{id}")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public HashMap<String, String> deleteProduct(@PathVariable int id){
+        productDao.delete(id);
+        HashMap<String, String> response = new HashMap<>();
+        response.put("Status", "Successful");
+        response.put("Message", "Product deleted");
+
+        return response;
+
+
 //        try
 //        {
-//            productDao.create(product);
+//            var product = productDao.getById(id);
+//
+//            if(product == null)
+//                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+//
+//            productDao.delete(id);
 //        }
 //        catch(Exception ex)
 //        {
 //            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
 //        }
-    }
-
-    @DeleteMapping("{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void deleteProduct(@PathVariable int id)
-    {
-        try
-        {
-            var product = productDao.getById(id);
-
-            if(product == null)
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-
-            productDao.delete(id);
-        }
-        catch(Exception ex)
-        {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
-        }
     }
 }

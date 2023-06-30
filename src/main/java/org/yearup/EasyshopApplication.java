@@ -10,5 +10,4 @@ public class EasyshopApplication {
         SpringApplication.run(EasyshopApplication.class, args);
 
     }
-
 }

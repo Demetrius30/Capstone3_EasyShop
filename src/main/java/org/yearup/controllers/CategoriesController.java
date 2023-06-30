@@ -124,16 +124,7 @@ public class CategoriesController{
 
         return response;
 
-//        try{
-//            var category = categoryDao.getById(id);
-//
-//            if(category == null)
-//                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-//
-//                categoryDao.delete(id);
-//        }catch (Exception e){
-//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "There was an ERROR!");
-//        }
+
 
     }
 }
